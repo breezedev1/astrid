@@ -175,7 +175,7 @@ public class TagSettingsActivity extends FragmentActivity {
         if(actFmPreferenceService.isLoggedIn()) {
             findViewById(R.id.tag_silenced_container).setVisibility(View.VISIBLE);
         }
-        
+
         picture.setDefaultImageResource(TagService.getDefaultImageIDForTag(tagData.getValue(TagData.NAME)));
         picture.setOnClickListener(new OnClickListener() {
             @Override
@@ -275,7 +275,7 @@ public class TagSettingsActivity extends FragmentActivity {
                     getString(R.string.actfm_TVA_login_to_share), R.string.actfm_EPA_login_button,
                     R.string.actfm_EPA_dont_share_button, android.R.drawable.ic_dialog_alert,
                     okListener, cancelListener);
-           Toast.makeText(this, R.string.tag_list_saved, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.tag_list_saved, Toast.LENGTH_LONG).show();
 
             return;
 
@@ -316,7 +316,9 @@ public class TagSettingsActivity extends FragmentActivity {
                     public void run() {
                         actFmSyncService.pushTagDataOnSave(tagData, tagData.getMergedValues());
                         if(setBitmap != null && tagData.getValue(TagData.REMOTE_ID) > 0)
-                            uploadTagPicture(setBitmap);
+                                uploadTagPicture(setBitmap);
+
+
                         runOnUiThread(loadTag);
                     }
                 }).start();
@@ -333,11 +335,17 @@ public class TagSettingsActivity extends FragmentActivity {
         refreshSettingsPage();
         finish();
     }
-    
+
     private void saveTagPictureLocally(Bitmap bitmap) {
-        String tagPicture = tagData.getPictureHash();
-        imageCache.put(bitmap, tagPicture);
-        tagData.setValue(TagData.PICTURE, tagPicture);
+        if (bitmap == null) return;
+        try {
+            String tagPicture = tagData.getPictureHash();
+            imageCache.put(tagPicture, bitmap);
+            tagData.setValue(TagData.PICTURE, tagPicture);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -370,6 +378,17 @@ public class TagSettingsActivity extends FragmentActivity {
             } else {
                 setTitle(getString(R.string.tag_settings_title, tagData.getValue(TagData.NAME)));
             }
+        }
+        String tagImage = tagData.getValue(TagData.PICTURE);
+        if(!TextUtils.isEmpty(tagImage) && imageCache.contains(tagImage)) {
+            try {
+                picture.setDefaultImageBitmap(imageCache.get(tagImage));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            picture.setUrl(tagImage);
         }
         picture.setUrl(tagData.getValue(TagData.PICTURE));
 
@@ -429,6 +448,7 @@ public class TagSettingsActivity extends FragmentActivity {
                 setBitmap = bitmap;
                 if(tagData.getValue(TagData.REMOTE_ID) > 0)
                     uploadTagPicture(bitmap);
+                saveTagPictureLocally(bitmap);
             }
         };
         if (ActFmCameraModule.activityResult(this, requestCode, resultCode, data, callback)) {
