@@ -106,5 +106,11 @@
   
   <!-- Header for tag activity -->
   <string name="tag_updates_title">Activity: %s</string>
+  
+  <!-- Delete button for tag settings -->
+  <string name="tag_delete_button">Delete List</string>
+  
+  <!-- Leave button for tag settings -->
+  <string name="tag_leave_button">Leave This List</string>
 
 </resources>
