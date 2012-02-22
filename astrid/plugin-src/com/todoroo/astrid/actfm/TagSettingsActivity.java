@@ -23,8 +23,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +79,7 @@ public class TagSettingsActivity extends FragmentActivity {
     private AsyncImageView picture;
     private EditText tagName;
     private EditText tagDescription;
-    private Switch isSilent;
+    private CheckBox isSilent;
     private Bitmap setBitmap;
 
     private boolean isNewTag = false;
@@ -166,7 +166,7 @@ public class TagSettingsActivity extends FragmentActivity {
         tagName = (EditText) findViewById(R.id.tag_name);
         tagDescription = (EditText) findViewById(R.id.tag_description);
         picture = (AsyncImageView) findViewById(R.id.picture);
-        isSilent = (Switch) findViewById(R.id.tag_silenced);
+        isSilent = (CheckBox) findViewById(R.id.tag_silenced);
         isSilent.setChecked(tagData.getFlag(TagData.FLAGS, TagData.FLAG_SILENT));
 
         if(actFmPreferenceService.isLoggedIn()) {
@@ -266,7 +266,7 @@ public class TagSettingsActivity extends FragmentActivity {
                 public void onClick(DialogInterface d, int which) {
 
                     tagMembers.removeAllViews();
-                    tagMembers.addPerson(""); //$NON-NLS-1$
+                    tagMembers.addPerson("", ""); //$NON-NLS-1$
                 }
             };
             DialogUtilities.okCancelCustomDialog(TagSettingsActivity.this, getString(R.string.actfm_EPA_login_button),
@@ -384,7 +384,7 @@ public class TagSettingsActivity extends FragmentActivity {
             }
         }
 
-        tagMembers.addPerson(""); //$NON-NLS-1$
+        tagMembers.addPerson("", ""); //$NON-NLS-1$
     }
 
     private void uploadTagPicture(final Bitmap bitmap) {
