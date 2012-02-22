@@ -80,7 +80,7 @@
   <string name="actfm_TVA_menu_refresh">Refresh</string>
 
   <!-- Tag Settings: tag name label -->
-  <string name="actfm_TVA_tag_label">List Name:</string>
+  <string name="actfm_TVA_tag_label">List</string>
 
   <!-- Tag Settings: tag owner label -->
   <string name="actfm_TVA_tag_owner_label">List Creator:</string>
