@@ -42,6 +42,7 @@ import com.todoroo.astrid.activity.FilterListFragment;
 import com.todoroo.astrid.activity.ShortcutActivity;
 import com.todoroo.astrid.api.Filter;
 import com.todoroo.astrid.data.TagData;
+import com.todoroo.astrid.helper.ImageDiskCache;
 import com.todoroo.astrid.service.StatisticsConstants;
 import com.todoroo.astrid.service.StatisticsService;
 import com.todoroo.astrid.service.TagDataService;
@@ -81,12 +82,14 @@ public class TagSettingsActivity extends FragmentActivity {
     private EditText tagDescription;
     private ToggleButton isSilent;
     private Bitmap setBitmap;
+    private final ImageDiskCache imageCache;
 
     private boolean isNewTag = false;
     private boolean isDialog;
 
     public TagSettingsActivity() {
         DependencyInjectionService.getInstance().inject(this);
+        imageCache = ImageDiskCache.getInstance();
     }
 
     @Override
@@ -170,11 +173,10 @@ public class TagSettingsActivity extends FragmentActivity {
         isSilent.setChecked(tagData.getFlag(TagData.FLAGS, TagData.FLAG_SILENT));
 
         if(actFmPreferenceService.isLoggedIn()) {
-            picture.setVisibility(View.VISIBLE);
             findViewById(R.id.tag_silenced_container).setVisibility(View.VISIBLE);
         }
+        
         picture.setDefaultImageResource(TagService.getDefaultImageIDForTag(tagData.getValue(TagData.NAME)));
-
         picture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -330,6 +332,12 @@ public class TagSettingsActivity extends FragmentActivity {
 
         refreshSettingsPage();
         finish();
+    }
+    
+    private void saveTagPictureLocally(Bitmap bitmap) {
+        String tagPicture = tagData.getPictureHash();
+        imageCache.put(bitmap, tagPicture);
+        tagData.setValue(TagData.PICTURE, tagPicture);
     }
 
     @Override
