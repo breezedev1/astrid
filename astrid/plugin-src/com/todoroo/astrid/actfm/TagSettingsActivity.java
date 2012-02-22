@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,8 +23,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +79,7 @@ public class TagSettingsActivity extends FragmentActivity {
     private AsyncImageView picture;
     private EditText tagName;
     private EditText tagDescription;
-    private CheckBox isSilent;
+    private Switch isSilent;
     private Bitmap setBitmap;
 
     private boolean isNewTag = false;
@@ -167,14 +166,13 @@ public class TagSettingsActivity extends FragmentActivity {
         tagName = (EditText) findViewById(R.id.tag_name);
         tagDescription = (EditText) findViewById(R.id.tag_description);
         picture = (AsyncImageView) findViewById(R.id.picture);
-        isSilent = (CheckBox) findViewById(R.id.tag_silenced);
+        isSilent = (Switch) findViewById(R.id.tag_silenced);
         isSilent.setChecked(tagData.getFlag(TagData.FLAGS, TagData.FLAG_SILENT));
 
         if(actFmPreferenceService.isLoggedIn()) {
             picture.setVisibility(View.VISIBLE);
             picture.setDefaultImageResource(TagService.getDefaultImageIDForTag(tagData.getValue(TagData.NAME)));
-            findViewById(R.id.picture_label).setVisibility(View.VISIBLE);
-            findViewById(R.id.listSettingsMore).setVisibility(View.VISIBLE);
+            findViewById(R.id.tag_silenced).setVisibility(View.VISIBLE);
         }
 
         picture.setOnClickListener(new OnClickListener() {
@@ -366,21 +364,6 @@ public class TagSettingsActivity extends FragmentActivity {
             }
         }
         picture.setUrl(tagData.getValue(TagData.PICTURE));
-
-        TextView ownerLabel = (TextView) findViewById(R.id.tag_owner);
-        try {
-            if(tagData.getFlag(TagData.FLAGS, TagData.FLAG_EMERGENT)) {
-                ownerLabel.setText(String.format("<%s>", getString(R.string.actfm_TVA_tag_owner_none)));
-            } else if(tagData.getValue(TagData.USER_ID) == 0) {
-                ownerLabel.setText(Preferences.getStringValue(ActFmPreferenceService.PREF_NAME));
-            } else {
-                JSONObject owner = new JSONObject(tagData.getValue(TagData.USER));
-                ownerLabel.setText(owner.getString("name"));
-            }
-        } catch (JSONException e) {
-            Log.e("tag-view-activity", "json error refresh owner", e);
-            ownerLabel.setText("<error>");
-        }
 
         String peopleJson = tagData.getValue(TagData.MEMBERS);
         updateMembers(peopleJson);
