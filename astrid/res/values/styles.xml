@@ -173,6 +173,9 @@
         <item name="abBackground">@android:color/white</item>
         <item name="abDisplayOptions">useLogo|showHome|showTitle</item>
         <item name="abLogo">@drawable/icon_48</item>
+        
+        <item name="asEditBackground">#dddddd</item>
+        <item name="asEditRowBackground">@drawable/task_edit_background_transparent_white</item>
     </style>
         
     <!--================================================== General == -->

@@ -188,6 +188,14 @@
                     android:src="@android:drawable/ic_media_ff" />
             </RelativeLayout>
         </LinearLayout>
+        <Button 
+            android:id="@+id/leave_list"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:text="Leave this list"
+            android:textColor="@attr/asTextColor"
+            android:background="@attr/asDetailsColor"
+            android:padding="5dip"/>
     </LinearLayout>
 
 </ScrollView>
