@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.timsu.astrid.R;
 import com.todoroo.andlib.service.Autowired;
@@ -79,7 +80,7 @@ public class TagSettingsActivity extends FragmentActivity {
     private AsyncImageView picture;
     private EditText tagName;
     private EditText tagDescription;
-    private CheckBox isSilent;
+    private ToggleButton isSilent;
     private Bitmap setBitmap;
 
     private boolean isNewTag = false;
@@ -166,7 +167,7 @@ public class TagSettingsActivity extends FragmentActivity {
         tagName = (EditText) findViewById(R.id.tag_name);
         tagDescription = (EditText) findViewById(R.id.tag_description);
         picture = (AsyncImageView) findViewById(R.id.picture);
-        isSilent = (CheckBox) findViewById(R.id.tag_silenced);
+        isSilent = (ToggleButton) findViewById(R.id.tag_silenced);
         isSilent.setChecked(tagData.getFlag(TagData.FLAGS, TagData.FLAG_SILENT));
 
         if(actFmPreferenceService.isLoggedIn()) {
