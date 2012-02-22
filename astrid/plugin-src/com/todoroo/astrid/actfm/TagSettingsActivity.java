@@ -96,6 +96,7 @@ public class TagSettingsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setupForDialogOrFullscreen();
         super.onCreate(savedInstanceState);
+        setTheme(ThemeService.getDialogTheme());
         setContentView(R.layout.tag_settings_activity);
         tagData = getIntent().getParcelableExtra(TagViewFragment.EXTRA_TAG_DATA);
         if (tagData == null) {
